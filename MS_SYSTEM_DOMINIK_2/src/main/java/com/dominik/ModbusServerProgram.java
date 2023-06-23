@@ -21,21 +21,21 @@ public class ModbusServerProgram {
         }
 
     }
-    public void WriteHoldingRegisters(int register)
+    public void WriteHoldingRegisters(int register,int position)
     {
-        server.holdingRegisters[1] = register;
+        server.holdingRegisters[position] = register;
     }
-    public void WriteInputRegisters(int input)
+    public void WriteInputRegisters(int input,int position)
     {
-        server.inputRegisters[1] = input;
+        server.inputRegisters[position] = input;
     }
-    public void WriteDiscreteInputs(boolean input)
+    public void WriteDiscreteInputs(boolean input,int position)
     {
-        server.discreteInputs[1] = input;
+        server.discreteInputs[position] = input;
     }
-    public void WriteCoils(boolean coil)
+    public void WriteCoils(boolean coil,int position)
     {
-        server.coils[1] = coil;
+        server.coils[position] = coil;
     }
 
 
