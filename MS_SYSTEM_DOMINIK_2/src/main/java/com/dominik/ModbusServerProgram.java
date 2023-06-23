@@ -10,10 +10,10 @@ public class ModbusServerProgram {
     {
         server = new ModbusServer();
         server.setPort(port);
-        WriteCoils(true);
-        WriteDiscreteInputs(true);
-        WriteHoldingRegisters(55);
-        WriteInputRegisters(102);
+        WriteCoils(true,1);
+        WriteDiscreteInputs(true,1);
+        WriteHoldingRegisters(55,1);
+        WriteInputRegisters(102,1);
         try {
             server.Listen();
         } catch (IOException e) {
