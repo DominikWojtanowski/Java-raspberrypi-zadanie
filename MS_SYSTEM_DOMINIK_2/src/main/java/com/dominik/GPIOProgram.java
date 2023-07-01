@@ -12,7 +12,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 public class GPIOProgram {
+    private static PostSender sender = new PostSender();
     private static SNMP_Program program = new SNMP_Program("udp:0.0.0.0/161","1.3.6.1.2.1.1.1","uzytkownik","authtest","privtest");
+    private int uptime = 0;
     private static final int pin_button = 24; // PIN 18 = BCM 24
     private static final int ms_delay = 1000; // odstep miedzy cyklicznie pobudzanym toggle
     private static final int min_closetime = 20; // czas dzialania programu
@@ -49,7 +51,9 @@ public class GPIOProgram {
         ScheduledExecutorService taskexecutor = Executors.newScheduledThreadPool(1);
         //Zadanie ktore ma pobudzac cyklicznie pin gpio, oraz gdy pin bedzie pobudzony to ustawia flage wasTriggered na true
         Runnable task = () -> {
-            /*program.SendError();*/ // Jesli trzeba bedzie przetestowac snmp4j to prosze to odznaczyc
+            sender.Post(200,"System is working",++uptime);
+            sender.CheckError();
+            //program.SendError(); // Jesli trzeba bedzie przetestowac snmp4j to prosze to odznaczyc
             ledoutput.toggle();
             if(ledoutput.state()==DigitalState.HIGH)
                 wasTriggered.set(true);
@@ -90,6 +94,7 @@ public class GPIOProgram {
                     err.show_error();
                     try {
                         program.SendError();
+                        sender.Post(400,"The System has stopped working",++uptime);
                         CleanUpResources(pi4j,taskexecutor);
                         System.out.println("IN THE NEXT 5 SECONDS THE SYSTEM WILL BE RESTARTED");
                         try {
